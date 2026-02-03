@@ -2,12 +2,16 @@ import { createClient } from "next-sanity"
 import imageUrlBuilder from "@sanity/image-url"
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types"
 
+// ---------- Sanity Client ----------
+
 export const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "xs013mwc",
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+  projectId: "xs013mwc",
+  dataset: "production",
   apiVersion: "2024-01-01",
-  useCdn: true,
+  useCdn: true, // חשוב לפיתוח ולמניעת בעיות cache
 })
+
+// ---------- Image URL Builder ----------
 
 const builder = imageUrlBuilder(client)
 
@@ -15,7 +19,8 @@ export function urlFor(source: SanityImageSource) {
   return builder.image(source)
 }
 
-// Types for Sanity documents
+// ---------- Types ----------
+
 export interface SanityPizzaStyle {
   _id: string
   name: string
@@ -56,14 +61,43 @@ export interface SanityArticle {
   title: string
   slug: { current: string }
   excerpt: string
-  mainImage: SanityImageSource
-  body: unknown[]
-  publishedAt: string
+  mainImage?: SanityImageSource
+  content: unknown[] // ⚠️ תואם לשם בסכמה שלך
+  publishedAt?: string
   relatedPizzaStyle?: SanityPizzaStyle
 }
 
-// Queries
-export const pizzaStylesQuery = `*[_type == "pizzaStyle"] | order(name asc)`
-export const pizzaStyleBySlugQuery = `*[_type == "pizzaStyle" && slug.current == $slug][0]`
-export const articlesQuery = `*[_type == "article"] | order(publishedAt desc)`
-export const articleBySlugQuery = `*[_type == "article" && slug.current == $slug][0]{ ..., relatedPizzaStyle-> }`
+// ---------- Queries ----------
+
+export const pizzaStylesQuery = `
+  *[_type == "pizzaStyle"] | order(name asc)
+`
+
+export const pizzaStyleBySlugQuery = `
+  *[_type == "pizzaStyle" && slug.current == $slug][0]
+`
+
+export const articlesQuery = `
+  *[_type == "article"] | order(publishedAt desc) {
+    _id,
+    title,
+    excerpt,
+    content,
+    publishedAt,
+    mainImage,
+    tags
+  }
+`
+
+export const articleBySlugQuery = `
+  *[_type == "article" && slug.current == $slug][0]{
+    _id,
+    title,
+    excerpt,
+    content,
+    publishedAt,
+    mainImage,
+    tags,
+    relatedPizzaStyle->
+  }
+`

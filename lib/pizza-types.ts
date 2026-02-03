@@ -147,8 +147,8 @@ export const PIZZA_STYLES: Record<PizzaStyle, PizzaStyleConfig> = {
       ]
     },
     youtubeLinks: [
-      { title: "פיצה רומית אל טליו", url: "https://www.youtube.com/watch?v=2jCnBXSrwqo", channel: "Vito Iacopelli" },
-      { title: "פיצת טליה מושלמת", url: "https://www.youtube.com/watch?v=BbNTniXUxKM", channel: "The Pizza Chef" }
+      { title: "פיצה רומית אל טליו", url: "https://www.youtube.com/watch?v=kwyOBo8NBXI", channel: "Simply Bread Co" },
+      { title: "פיצת טליה מושלמת", url: "https://www.youtube.com/watch?v=V-AK53CIc-g", channel: "Gozney" }
     ]
   },
   newhaven: {
@@ -184,8 +184,8 @@ export const PIZZA_STYLES: Record<PizzaStyle, PizzaStyleConfig> = {
       ]
     },
     youtubeLinks: [
-      { title: "אפיצה בסגנון ניו הייבן", url: "https://www.youtube.com/watch?v=Z5_8B6g4q9g", channel: "Internet Shaquille" },
-      { title: "פיצה בסגנון Sally's", url: "https://www.youtube.com/watch?v=qKMM9K7ZHWY", channel: "Ethan Chlebowski" }
+      { title: "אפיצה בסגנון ניו הייבן", url: "https://www.youtube.com/watch?v=BERjGpdBe_0", channel: "Vito Iacopelli" },
+      { title: "פיצה בסגנון Sally's", url: "https://www.youtube.com/watch?v=169eWnqe1FU", channel: "First We Feast" }
     ]
   },
   detroit: {
@@ -280,13 +280,13 @@ export function calculateRecipe(
 ): Recipe {
   const config = PIZZA_STYLES[style]
   const totalWeight = ballWeight * numberOfBalls
-  
-  const flourWeight = totalWeight / (1 + config.hydration/100 + config.salt/100 + config.yeast/100 + config.oil/100)
+
+  const flourWeight = totalWeight / (1 + config.hydration / 100 + config.salt / 100 + config.yeast / 100 + config.oil / 100)
   const waterWeight = flourWeight * (config.hydration / 100)
   const saltWeight = flourWeight * (config.salt / 100)
   const yeastWeight = flourWeight * (config.yeast / 100)
   const oilWeight = flourWeight * (config.oil / 100)
-  
+
   return {
     flour: Math.round(flourWeight),
     water: Math.round(waterWeight),
@@ -320,7 +320,7 @@ export function calculateRescue(
     case "tooMuchWater": {
       const neededFlour = Math.round(actualWater / targetHydration - actualFlour)
       const recommendations = []
-      
+
       if (neededFlour > 0) {
         recommendations.push(`הוסף ${neededFlour} גרם קמח כדי להגיע להידרציה של ${config.hydration}% עבור ${config.name}`)
         recommendations.push(`ההידרציה הנוכחית היא ${currentHydration.toFixed(1)}%, היעד הוא ${config.hydration}%`)
@@ -331,13 +331,13 @@ export function calculateRescue(
         recommendations.push(`נוכחי: ${currentHydration.toFixed(1)}%, יעד: ${config.hydration}%`)
         recommendations.push("אם הבצק מרגיש רטוב מדי, נסה להניח אותו למנוחה 30 דקות או השתמש בפחות מים בפעם הבאה")
       }
-      
+
       return recommendations
     }
     case "tooMuchFlour": {
       const neededWater = Math.round(actualFlour * targetHydration - actualWater)
       const recommendations = []
-      
+
       if (neededWater > 0) {
         recommendations.push(`הוסף ${neededWater} גרם מים כדי להגיע להידרציה של ${config.hydration}% עבור ${config.name}`)
         recommendations.push(`ההידרציה הנוכחית היא ${currentHydration.toFixed(1)}%, היעד הוא ${config.hydration}%`)
@@ -348,7 +348,7 @@ export function calculateRescue(
         recommendations.push(`נוכחי: ${currentHydration.toFixed(1)}%, יעד: ${config.hydration}%`)
         recommendations.push("אם הבצק מרגיש יבש, וודא שאתה לש מספיק זמן כדי לפתח גלוטן")
       }
-      
+
       return recommendations
     }
     case "forgotSalt": {
@@ -363,18 +363,18 @@ export function calculateRescue(
     case "tooSticky": {
       const recommendations = []
       recommendations.push(`הידרציה נוכחית: ${currentHydration.toFixed(1)}% - ${config.name} שואף ל-${config.hydration}%`)
-      
+
       if (currentHydration > config.hydration + 5) {
         const flourToAdd = Math.round(actualFlour * 0.05)
         recommendations.push(`הבצק בהידרציה יתר. נסה להוסיף ${flourToAdd} גרם קמח (5% מהקמח הנוכחי)`)
       } else {
         recommendations.push("ההידרציה נכונה - דביקות היא נורמלית בשלב זה")
       }
-      
+
       recommendations.push("שמן את הידיים במקום להוסיף קמח בעת טיפול בבצק")
       recommendations.push("הנח את הבצק במקרר ל-30-60 דקות כדי להקל על העבודה איתו")
       recommendations.push("השתמש בטכניקת מתיחה וקיפול במקום לישה מסורתית")
-      
+
       return recommendations
     }
     default:

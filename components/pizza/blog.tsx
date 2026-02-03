@@ -1,16 +1,22 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { client, articlesQuery } from "@/lib/sanity"
 import Image from "next/image"
 import { Calendar, Clock, User, Search, ChevronLeft } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { PortableText } from "@portabletext/react"
+import urlBuilder from "@sanity/image-url"
 
-// Mock blog posts data
+// עזר לעיבוד תמונות מסניטי
+const builder = urlBuilder(client)
+const urlFor = (source: any) => source ? builder.image(source).url() : "/placeholder.svg"
+
 const blogPosts = [
   {
-    id: 1,
+    id: "local-1",
     title: "בחירת הקמח המתאים לפיצה שלכם",
     excerpt: "הבסיס של כל פיצה מעולה מתחיל בקמח. הנה כל מה שאתם צריכים לדעת על בחירת הקמח המושלם לסגנון שלכם.",
     image: "/images/blog-flour-types.jpg",
@@ -78,98 +84,96 @@ const blogPosts = [
     `
   },
   {
-    id: 2,
+    id: "local-2",
     title: "5 טעויות נפוצות בהכנת בצק",
-    excerpt: "נמנעו מטעויות האלו כדי להשיג את הבצק המושלם בכל פעם. מאפיות ביתיות עושות את אלו כל הזמן.",
+    excerpt: "נמנעו מטעויות האלו כדי להשיג את הבצק המושלם בכל פעם.",
     image: "/images/blog-pizza-dough.jpg",
     date: "25 ינואר, 2026",
     readTime: "6 דקות קריאה",
     author: "צוות הפיצה",
     tags: ["בצק", "טעויות", "טיפים"],
-    content: "<p>תוכן מלא יגיע בקרוב...</p>"
+    content: "<p>תוכן מלא יגיע בקרוב...</p>",
   },
   {
-    id: 3,
+    id: "local-3",
     title: "איך לשדרג את התנור הביתי שלכם",
-    excerpt: "אין לכם תנור פיצה? אין בעיה. השיגו תוצאות ברמת מסעדה עם התנור הרגיל שלכם באמצעות הטריקים האלו.",
+    excerpt: "אין לכם תנור פיצה? אין בעיה.",
     image: "/images/blog-flour-types.jpg",
     date: "20 ינואר, 2026",
     readTime: "5 דקות קריאה",
     author: "צוות הפיצה",
     tags: ["תנור", "טכניקות", "ציוד"],
-    content: "<p>תוכן מלא יגיע בקרוב...</p>"
-  }
+    content: "<p>תוכן מלא יגיע בקרוב...</p>",
+  },
 ]
 
 export function Blog() {
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedPost, setSelectedPost] = useState<typeof blogPosts[0] | null>(null)
+  const [selectedPost, setSelectedPost] = useState<any | null>(null)
+  const [sanityPosts, setSanityPosts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const filteredPosts = blogPosts.filter(post => {
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const data = await client.fetch(articlesQuery)
+        setSanityPosts(data)
+      } catch (error) {
+        console.error("Failed to fetch from Sanity:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchPosts()
+  }, [])
+
+  // 💡 איחוד רשימות: סניטי קודם, אחר כך המקומיות
+  const allPosts = [...sanityPosts, ...blogPosts]
+
+  const filteredPosts = allPosts.filter((post) => {
     const query = searchQuery.toLowerCase()
     return (
-      post.title.toLowerCase().includes(query) ||
-      post.excerpt.toLowerCase().includes(query) ||
-      post.tags.some(tag => tag.toLowerCase().includes(query))
+      post.title?.toLowerCase().includes(query) ||
+      post.excerpt?.toLowerCase().includes(query)
     )
   })
+
+  // פונקציית עזר להצגת תמונה (סניטי או מקומי)
+  const getImageUrl = (post: any) => {
+    if (post.mainImage) return urlFor(post.mainImage) // תמונה מסניטי
+    return post.image || "/placeholder.svg" // תמונה מקומית
+  }
 
   if (selectedPost) {
     return (
       <div className="max-w-3xl mx-auto">
-        <Button 
-          variant="ghost" 
-          onClick={() => setSelectedPost(null)}
-          className="mb-6 hover:bg-muted"
-        >
-          <ChevronLeft className="h-4 w-4 ml-2" />
-          חזרה לבלוג
+        <Button variant="ghost" onClick={() => setSelectedPost(null)} className="mb-6">
+          <ChevronLeft className="h-4 w-4 ml-2" /> חזרה לבלוג
         </Button>
 
         <article className="space-y-8">
           <header className="space-y-4">
-            <div className="flex items-center gap-4 text-xs font-mono uppercase tracking-wider text-muted-foreground">
-              <span className="flex items-center gap-2">
-                <Calendar className="h-3 w-3" />
-                {selectedPost.date}
-              </span>
-              <span className="flex items-center gap-2">
-                <Clock className="h-3 w-3" />
-                {selectedPost.readTime}
-              </span>
-              <span className="flex items-center gap-2">
-                <User className="h-3 w-3" />
-                {selectedPost.author}
-              </span>
-            </div>
-            <h1 className="text-5xl md:text-6xl font-black uppercase leading-tight">
-              {selectedPost.title}
-            </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              {selectedPost.excerpt}
-            </p>
-            <div className="flex gap-2">
-              {selectedPost.tags.map(tag => (
-                <span key={tag} className="text-xs px-3 py-1 bg-primary/10 text-primary font-mono">
-                  {tag}
-                </span>
-              ))}
-            </div>
+            <h1 className="text-5xl font-black uppercase">{selectedPost.title}</h1>
+            <p className="text-lg text-muted-foreground">{selectedPost.excerpt}</p>
           </header>
 
           <div className="relative w-full h-[400px] border-2 border-border">
             <Image
-              src={selectedPost.image || "/placeholder.svg"}
+              src={getImageUrl(selectedPost)}
               alt={selectedPost.title}
               fill
               className="object-cover"
             />
           </div>
 
-          <div 
-            className="prose prose-lg max-w-none space-y-6"
-            dangerouslySetInnerHTML={{ __html: selectedPost.content }}
-          />
+          <div className="prose prose-lg max-w-none">
+            {/* בדיקה האם התוכן הוא HTML (מקומי) או אובייקט (סניטי) */}
+            {typeof selectedPost.content === "string" ? (
+              <div dangerouslySetInnerHTML={{ __html: selectedPost.content }} />
+            ) : (
+              <PortableText value={selectedPost.content} />
+            )}
+          </div>
         </article>
       </div>
     )
@@ -177,91 +181,33 @@ export function Blog() {
 
   return (
     <div className="space-y-8">
-      {/* Search Bar */}
       <div className="relative max-w-md">
-        <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          type="text"
-          placeholder="חיפוש כתבות, תגיות..."
+          placeholder="חיפוש כתבות..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pr-10"
         />
       </div>
 
-      {/* Blog Posts Grid */}
       <div className="space-y-6">
-        {filteredPosts.length === 0 ? (
-          <Card>
-            <CardContent className="py-12 text-center">
-              <p className="text-muted-foreground">לא נמצאו כתבות התואמות את החיפוש</p>
+        {filteredPosts.map((post) => (
+          <Card key={post._id || post.id} className="border-2 hover:border-primary transition-colors overflow-hidden">
+            <CardContent className="p-0 flex flex-col md:flex-row gap-6">
+              <div className="relative w-full md:w-64 h-48">
+                <Image src={getImageUrl(post)} alt={post.title} fill className="object-cover" />
+              </div>
+              <div className="p-6 flex-1">
+                <h2 className="text-2xl font-bold">{post.title}</h2>
+                <p className="text-muted-foreground line-clamp-2">{post.excerpt}</p>
+                <Button variant="outline" className="mt-4" onClick={() => setSelectedPost(post)}>
+                  המשך קריאה <ChevronLeft className="h-4 w-4 mr-2" />
+                </Button>
+              </div>
             </CardContent>
           </Card>
-        ) : (
-          filteredPosts.map((post) => (
-            <Card key={post.id} className="border-2 border-border hover:border-primary transition-colors overflow-hidden">
-              <CardContent className="p-0">
-                <div className="flex flex-col md:flex-row gap-6">
-                  {/* Image */}
-                  <div className="relative w-full md:w-64 h-48 md:h-auto flex-shrink-0">
-                    <Image
-                      src={post.image || "/placeholder.svg"}
-                      alt={post.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 p-6 flex flex-col justify-between">
-                    <div className="space-y-3">
-                      {/* Meta */}
-                      <div className="flex items-center gap-3 text-xs font-mono text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {post.date}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {post.readTime}
-                        </span>
-                      </div>
-
-                      {/* Title */}
-                      <h2 className="text-2xl font-bold leading-tight hover:text-primary transition-colors">
-                        {post.title}
-                      </h2>
-
-                      {/* Excerpt */}
-                      <p className="text-muted-foreground leading-relaxed line-clamp-2">
-                        {post.excerpt}
-                      </p>
-
-                      {/* Tags */}
-                      <div className="flex gap-2 flex-wrap">
-                        {post.tags.map(tag => (
-                          <span key={tag} className="text-xs px-2 py-1 bg-muted text-foreground font-mono">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Read More Button */}
-                    <Button 
-                      variant="outline" 
-                      className="mt-4 w-fit bg-transparent"
-                      onClick={() => setSelectedPost(post)}
-                    >
-                      המשך קריאה
-                      <ChevronLeft className="h-4 w-4 mr-2" />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))
-        )}
+        ))}
       </div>
     </div>
   )
