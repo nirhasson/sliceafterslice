@@ -1,33 +1,17 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import { client, articlesQuery } from "@/lib/sanity"
-import Image from "next/image"
-import { Calendar, Clock, User, Search, ChevronLeft } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { client } from "@/lib/sanity"
 import { PortableText } from "@portabletext/react"
+import { Navigation } from "@/components/pizza/navigation"
+import { Button } from "@/components/ui/button"
+import { ChevronLeft } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 import urlBuilder from "@sanity/image-url"
 
-// עזר לעיבוד תמונות מסניטי
+// 1. הגדרת ה-URL Builder (קריטי!)
 const builder = urlBuilder(client)
 const urlFor = (source: any) => source ? builder.image(source).url() : "/placeholder.svg"
 
-// לזה (הוספת שדה slug):
-const blogPosts = [
-  {
-    id: "local-1",
-    slug: { current: "local-flour-guide" }, // 👈 הוספת השורה הזו
-    title: "בחירת הקמח המתאים לפיצה שלכם",
-    excerpt: "הבסיס של כל פיצה מעולה מתחיל בקמח. הנה כל מה שאתם צריכים לדעת על בחירת הקמח המושלם לסגנון שלכם.",
-    image: "/images/blog-flour-types.jpg",
-    date: "29 ינואר, 2026",
-    readTime: "8 דקות קריאה",
-    author: "צוות הפיצה",
-    tags: ["קמח", "מרכיבים", "טיפים"],
-    content: `
+const FULL_FLOUR_GUIDE = `
       <p>הסוד לפיצה מצוינת מתחיל הרבה לפני התנור - הכל מתחיל בבחירת הקמח הנכון. בעולם הקמח, לא כל הקמחים נבראו שווים, ובחירת הקמח שלכם תשפיע באופן משמעותי על המרקם, הטעם והמראה של הקרום.</p>
 
       <h2>מדוע החלבון חשוב</h2>
@@ -84,81 +68,119 @@ const blogPosts = [
       </ul>
 
       <p class="text-lg font-medium mt-8">זכרו: הקמח הוא רק נקודת המוצא. הטכניקה, ההידרציה, זמן התפיחה והטיפול בבצק - כולם חשובים לא פחות. התחילו עם קמח איכותי, אבל אל תפחדו לנסות ולהתנסות עד שתמצאו את השילוב המושלם בשבילכם!</p>
-    `
-  },
+    `;
 
-]
+import type { Metadata } from 'next'
 
-export function Blog() {
-  const [searchQuery, setSearchQuery] = useState("")
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  if (slug === "local-flour-guide" || slug === "local-1") {
+    return { title: "מדריך הקמחים לפיצה | Pizza Shop", description: "הבסיס של כל פיצה מעולה" }
+  }
+  const article = await client.fetch(`*[_type == "article" && (slug.current == $slug || _id == $slug)][0]{title, excerpt}`, { slug });
+  if (!article) return { title: "כתבה לא נמצאה" }
+  return { title: `${article.title} | Pizza Blog`, description: article.excerpt }
+}
 
-  const [sanityPosts, setSanityPosts] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
 
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const data = await client.fetch(articlesQuery)
-        setSanityPosts(data)
-      } catch (error) {
-        console.error("Failed to fetch from Sanity:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchPosts()
-  }, [])
-
-  // 💡 איחוד רשימות: סניטי קודם, אחר כך המקומיות
-  const allPosts = [...sanityPosts, ...blogPosts]
-
-  const filteredPosts = allPosts.filter((post) => {
-    const query = searchQuery.toLowerCase()
+  if (slug === "local-flour-guide" || slug === "local-1") {
     return (
-      post.title?.toLowerCase().includes(query) ||
-      post.excerpt?.toLowerCase().includes(query)
-    )
-  })
-
-  // פונקציית עזר להצגת תמונה (סניטי או מקומי)
-  const getImageUrl = (post: any) => {
-    if (post.mainImage) return urlFor(post.mainImage) // תמונה מסניטי
-    return post.image || "/placeholder.svg" // תמונה מקומית
+      <RenderPost
+        post={{
+          title: "בחירת הקמח המתאים לפיצה שלכם",
+          excerpt: "הבסיס של כל פיצה מעולה מתחיל בקמח.",
+          content: FULL_FLOUR_GUIDE,
+          image: "/images/blog-flour-types.jpg",
+          isLocal: true
+        }}
+      />
+    );
   }
 
+  const article = await client.fetch(`
+    *[_type == "article" && (slug.current == $slug || _id == $slug)][0]{
+      _id, title, excerpt, mainImage, content, publishedAt
+    }
+  `, { slug });
+
+  if (!article) {
+    return (
+      <div className="max-w-4xl mx-auto px-6 py-20 text-center">
+        <h1 className="text-2xl font-bold">הכתבה לא נמצאה</h1>
+        <Button asChild className="mt-8"><Link href="/blog">חזרה לבלוג</Link></Button>
+      </div>
+    );
+  }
+
+  return <RenderPost post={article} />;
+}
+
+function RenderPost({ post }: { post: any }) {
+  // קומפוננטות רינדור ל-PortableText (מאוחד)
+  const portableTextComponents = {
+    types: {
+      image: ({ value }: any) => {
+        if (!value?.asset?._ref) return null;
+        return (
+          <div className="relative w-full h-96 my-6 rounded-lg overflow-hidden border border-border">
+            <Image src={urlFor(value.asset)} alt={value.alt || "תמונה"} fill className="object-cover" />
+          </div>
+        );
+      },
+      spacer: ({ value }: any) => {
+        const heights: Record<string, string> = { small: 'h-4', medium: 'h-12', large: 'h-24' };
+        return <div className={heights[value.size] || 'h-12'} />;
+      },
+      youtube: ({ value }: any) => {
+        const { url } = value;
+        if (!url) return null;
+        const id = url.includes('v=') ? url.split('v=')[1].split('&')[0] : url.split('/').pop().split('?')[0];
+        return (
+          <div className="my-10 relative pb-[56.25%] h-0 overflow-hidden rounded-xl shadow-lg border-2 border-border bg-black">
+            <iframe className="absolute top-0 left-0 w-full h-full" src={`https://www.youtube.com/embed/${id}`} title="YouTube" allowFullScreen></iframe>
+          </div>
+        );
+      },
+    },
+    block: {
+      h2: ({ children }: any) => <h2 className="text-3xl font-black mt-8 mb-4">{children}</h2>,
+      h3: ({ children }: any) => <h3 className="text-2xl font-bold mt-6 mb-3">{children}</h3>,
+      normal: ({ children }: any) => <p className="leading-relaxed mb-4 whitespace-pre-wrap">{children}</p>,
+    },
+  };
 
   return (
-    <div className="space-y-8">
-      <div className="relative max-w-md">
-        <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="חיפוש כתבות..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pr-10"
-        />
-      </div>
+    <div className="max-w-4xl mx-auto px-6 py-12 text-right" dir="rtl">
+      <Button variant="ghost" asChild className="mb-6">
+        <Link href="/blog"><ChevronLeft className="h-4 w-4 ml-2" /> חזרה לבלוג</Link>
+      </Button>
+      <Navigation />
+      <article className="mt-12 space-y-8">
+        <header className="space-y-4">
+          <h1 className="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-none">{post.title}</h1>
+          {post.excerpt && <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl">{post.excerpt}</p>}
+        </header>
 
-      <div className="space-y-6">
-        {filteredPosts.map((post) => (
-          <Card key={post._id || post.id} className="border-2 hover:border-primary transition-colors overflow-hidden">
-            <CardContent className="p-0 flex flex-col md:flex-row gap-6">
-              <div className="relative w-full md:w-64 h-48">
-                <Image src={getImageUrl(post)} alt={post.title} fill className="object-cover" />
-              </div>
-              <div className="p-6 flex-1">
-                <h2 className="text-2xl font-bold">{post.title}</h2>
-                <p className="text-muted-foreground line-clamp-2">{post.excerpt}</p>
-                <Button variant="outline" className="mt-4" asChild>
-                  <Link href={`/blog/${post.slug?.current || post._id || post.id}`}>
-                    המשך קריאה <ChevronLeft className="h-4 w-4 mr-2" />
-                  </Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+        <div className="relative w-full h-[450px] border-2 border-border overflow-hidden bg-muted shadow-xl">
+          <Image
+            src={post.isLocal ? post.image : (post.mainImage?.asset ? urlFor(post.mainImage) : "/placeholder.svg")}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+
+        <div className="prose prose-lg max-w-none prose-red dark:prose-invert">
+          {post.isLocal ? (
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          ) : (
+            <PortableText value={post.content} components={portableTextComponents} />
+          )}
+        </div>
+      </article>
     </div>
-  )
+  );
 }

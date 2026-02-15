@@ -8,7 +8,7 @@ export const client = createClient({
   projectId: "xs013mwc",
   dataset: "production",
   apiVersion: "2024-01-01",
-  useCdn: true, // חשוב לפיתוח ולמניעת בעיות cache
+  useCdn: false, // חשוב לפיתוח ולמניעת בעיות cache
 })
 
 // ---------- Image URL Builder ----------
@@ -81,6 +81,7 @@ export const articlesQuery = `
   *[_type == "article"] | order(publishedAt desc) {
     _id,
     title,
+    slug, // 👈 הוספנו את השדה הזה
     excerpt,
     content,
     publishedAt,

@@ -1,27 +1,25 @@
 "use client"
 
 import Image from "next/image"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { ChevronRight, Flame, Timer } from "lucide-react"
+import Link from "next/link"
+import { Flame, Timer } from "lucide-react"
 import type { PizzaStyle, PizzaStyleConfig } from "@/lib/pizza-types"
 
 interface PizzaCardProps {
   style: PizzaStyle
   config: PizzaStyleConfig
-  onSelect: (style: PizzaStyle) => void
   index?: number
 }
 
-export function PizzaCard({ style, config, onSelect, index }: PizzaCardProps) {
+export function PizzaCard({ style, config, index }: PizzaCardProps) {
   return (
-    <div 
-      className="border-2 border-border p-6 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all cursor-pointer group relative"
-      onClick={() => onSelect(style)}
+    <Link
+      href={`/calculator/${style}`}
+      className="border-2 border-border p-6 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all cursor-pointer group relative block"
     >
       {index !== undefined && (
         <div className="absolute top-2 right-2 text-xs font-mono opacity-40">
-          {String(index + 1).padStart(2, '0')}
+          {String(index + 1).padStart(2, "0")}
         </div>
       )}
       <div className="flex items-start gap-4">
@@ -30,7 +28,7 @@ export function PizzaCard({ style, config, onSelect, index }: PizzaCardProps) {
             src={config.image || "/placeholder.svg"}
             alt={config.name}
             fill
-            className="object-cover grayscale group-hover:grayscale-0 transition-all"
+            className="object-cover group-hover:scale-110 transition-all"
           />
         </div>
         <div className="flex-1">
@@ -52,6 +50,6 @@ export function PizzaCard({ style, config, onSelect, index }: PizzaCardProps) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

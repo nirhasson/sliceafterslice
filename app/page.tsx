@@ -1,39 +1,13 @@
 "use client"
 
-import { useState } from "react"
-import dynamic from "next/dynamic"
-import BlogServer from "@/components/pizza/blog-server"
 import { Navigation } from "@/components/pizza/navigation"
 import { PizzaCard } from "@/components/pizza/pizza-card"
-import { Calculator } from "@/components/pizza/calculator"
-import { Rescue } from "@/components/pizza/rescue"
 import { Newsletter } from "@/components/pizza/newsletter"
 import { useLanguage } from "@/lib/language-context"
 import { PIZZA_STYLES, type PizzaStyle } from "@/lib/pizza-types"
 
-
-type TabValue = "menu" | "rescue" | "blog" | "share"
-type ViewState = { type: "menu" } | { type: "calculator"; style: PizzaStyle }
-
 export default function SliceAfterSlice() {
-  const [activeTab, setActiveTab] = useState<TabValue>("menu")
-  const [viewState, setViewState] = useState<ViewState>({ type: "menu" })
   const { t } = useLanguage()
-
-  const handleSelectPizza = (style: PizzaStyle) => {
-    setViewState({ type: "calculator", style })
-  }
-
-  const handleBackToMenu = () => {
-    setViewState({ type: "menu" })
-  }
-
-  const handleTabChange = (tab: TabValue) => {
-    setActiveTab(tab)
-    if (tab === "menu") {
-      setViewState({ type: "menu" })
-    }
-  }
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -65,38 +39,25 @@ export default function SliceAfterSlice() {
           </p>
         </header>
 
-        <Navigation activeTab={activeTab} onTabChange={handleTabChange} />
+        {/* הניווט החדש שמוביל לעמודים נפרדים */}
+        <Navigation />
 
         <main className="mt-6">
-          {activeTab === "menu" &&
-            (viewState.type === "menu" ? (
-              <div className="space-y-4">
-                {(
-                  Object.entries(PIZZA_STYLES) as [
-                    PizzaStyle,
-                    typeof PIZZA_STYLES[PizzaStyle]
-                  ][]
-                ).map(([style, config], index) => (
-                  <PizzaCard
-                    key={style}
-                    style={style}
-                    config={config}
-                    onSelect={handleSelectPizza}
-                    index={index}
-                  />
-                ))}
-              </div>
-            ) : (
-              <Calculator
-                selectedStyle={viewState.style}
-                onBack={handleBackToMenu}
+          <div className="space-y-4">
+            {(
+              Object.entries(PIZZA_STYLES) as [
+                PizzaStyle,
+                typeof PIZZA_STYLES[PizzaStyle]
+              ][]
+            ).map(([style, config], index) => (
+              <PizzaCard
+                key={style}
+                style={style}
+                config={config}
+                index={index}
               />
             ))}
-
-          {activeTab === "rescue" && <Rescue />}
-
-          {/* ✅ כאן Sanity נטען נכון */}
-          {activeTab === "blog" && <BlogServer />}
+          </div>
         </main>
 
         <div className="mt-12">

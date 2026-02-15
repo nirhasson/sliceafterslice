@@ -2,21 +2,21 @@
 
 import React, { useState } from "react"
 import Image from "next/image"
+import Link from "next/link" // ייבוא Link לניווט
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { 
-  ArrowLeft, 
-  Wheat, 
-  Droplets, 
-  Circle, 
-  Clock, 
+import {
+  ArrowLeft,
+  Wheat,
+  Droplets,
+  Circle,
+  Clock,
   Hash,
   Flame,
   Timer,
   Hand,
-  Thermometer,
   Youtube,
   Share2,
   ExternalLink
@@ -26,10 +26,10 @@ import { PIZZA_STYLES, calculateRecipe } from "@/lib/pizza-types"
 
 interface CalculatorProps {
   selectedStyle: PizzaStyle
-  onBack: () => void
+  // הוסר onBack כדי למנוע שגיאות Server Component
 }
 
-export function Calculator({ selectedStyle, onBack }: CalculatorProps) {
+export function Calculator({ selectedStyle }: CalculatorProps) {
   const [numBalls, setNumBalls] = useState(4)
   const [ballWeight, setBallWeight] = useState(260)
   const [recipe, setRecipe] = useState<Recipe | null>(null)
@@ -43,7 +43,7 @@ export function Calculator({ selectedStyle, onBack }: CalculatorProps) {
 
   const handleShareRecipe = async () => {
     if (!recipe) return
-    
+
     const shareText = `${config.name} Recipe (${numBalls} balls, ${ballWeight}g each):
     
 Flour: ${recipe.flour}g
@@ -63,11 +63,9 @@ Made with SliceAfterSlice`
           text: shareText,
         })
       } catch (err) {
-        // User cancelled or error
         console.log("Share cancelled")
       }
     } else {
-      // Fallback to clipboard
       await navigator.clipboard.writeText(shareText)
       alert("Recipe copied to clipboard!")
     }
@@ -85,23 +83,27 @@ Made with SliceAfterSlice`
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={onBack}
+
+          {/* כפתור חזור מעודכן כלינק */}
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
             className="absolute top-4 left-4 bg-background/80 hover:bg-background text-foreground"
           >
-            <ArrowLeft className="h-4 w-4 ml-2" />
-            חזור
+            <Link href="/">
+              <ArrowLeft className="h-4 w-4 ml-2" />
+              חזור
+            </Link>
           </Button>
+
           <div className="absolute bottom-4 left-4 right-4">
             <h1 className="text-2xl font-bold text-white">{config.name}</h1>
             <p className="text-white/80 text-sm mt-1">{config.description}</p>
           </div>
         </div>
-        
+
         <CardContent className="p-6 space-y-6">
-          {/* Calculator Inputs */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="numBalls" className="text-sm font-medium">
@@ -151,9 +153,9 @@ Made with SliceAfterSlice`
                   {numBalls} כדורים, {ballWeight}ג כדור
                 </CardDescription>
               </div>
-              <Button 
-                variant="outline" 
-                size="sm" 
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={handleShareRecipe}
                 className="bg-transparent"
               >

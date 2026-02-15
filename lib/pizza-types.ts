@@ -221,8 +221,8 @@ export const PIZZA_STYLES: Record<PizzaStyle, PizzaStyleConfig> = {
       ]
     },
     youtubeLinks: [
-      { title: "פיצת דטרויט בבית", url: "https://www.youtube.com/watch?v=HLbq1z7GPUE", channel: "Kenji Lopez-Alt" },
-      { title: "פיצת דטרויט מושלמת", url: "https://www.youtube.com/watch?v=H0E2H_YSQZM", channel: "Brian Lagerstrom" }
+      { title: "פיצת דטרויט בבית", url: "https://www.youtube.com/watch?v=R3S_4EdvkQo", channel: "Charlie Anderson" },
+      { title: "פיצת דטרויט מושלמת", url: "https://www.youtube.com/watch?v=hFibUq8pq0c", channel: "Patio Pizza" }
     ]
   },
   sicilian: {
@@ -258,8 +258,8 @@ export const PIZZA_STYLES: Record<PizzaStyle, PizzaStyleConfig> = {
       ]
     },
     youtubeLinks: [
-      { title: "מתכון פיצה סיצילאנית", url: "https://www.youtube.com/watch?v=svzP18JkGog", channel: "Vito Iacopelli" },
-      { title: "ספינצ'ונה אותנטי", url: "https://www.youtube.com/watch?v=T4lP8l7HHAQ", channel: "Italia Squisita" }
+      { title: "מתכון פיצה סיצילאנית", url: "https://www.youtube.com/watch?v=SXFch6pMdDs", channel: "Alexandra's Kitchen" },
+      { title: "ספינצ'ונה אותנטי", url: "https://www.youtube.com/watch?v=gtT34bqAhsw", channel: "Gozney" }
     ]
   }
 }

@@ -14,14 +14,14 @@ const translations = {
   he: {
     // Header
     siteName: "Slice After Slice",
-    tagline: "Perfect Pizza — Every Time",
+    tagline: "מגזין הפיצה של ישראל",
     footer: "EST. 2026",
-    
+
     // Navigation
     rescue: "הצלת בצק",
     calculator: "מחשבון",
     blog: "בלוג",
-    
+
     // Pizza Styles
     neapolitan: "נפוליטנית",
     newYork: "ניו יורק",
@@ -29,7 +29,7 @@ const translations = {
     newHaven: "ניו הייבן (אפיצה)",
     detroit: "דטרויט",
     sicilian: "סיציליאנית",
-    
+
     // Calculator
     backToMenu: "חזרה לתפריט",
     ballWeight: "משקל כדור בצק",
@@ -56,7 +56,7 @@ const translations = {
     bakingTime: "זמן אפייה",
     videoTutorials: "מדריכי וידאו",
     shareRecipe: "שתף מתכון",
-    
+
     // Rescue
     rescueTitle: "הצלת בצק",
     rescueDescription: "תיקון טעויות נפוצות בהכנת בצק",
@@ -70,7 +70,7 @@ const translations = {
     targetStyle: "סגנון יעד",
     calculateSolution: "חשב פתרון",
     solutions: "פתרונות",
-    
+
     // Blog
     blogComingSoon: "בקרוב...",
     blogDescription: "המדריך המקיף לכל מה שקשור לפיצה - ממתכונים למדריכי טכניקות",
@@ -81,7 +81,7 @@ const translations = {
     blogTechniquesDesc: "שולט באומנות עיצוב והשלכת בצק",
     blogIngredients: "מדריכי מרכיבים",
     blogIngredientsDesc: "בחר את הקמח, השמרים והרכיבים הטובים ביותר",
-    
+
     // Newsletter
     newsletter: {
       title: "כל הדברים הכי טעימים בעולם הפיצה",
@@ -92,7 +92,7 @@ const translations = {
       success: "תודה שנרשמת! תקבל את הניוזלטר הבא שלנו בקרוב.",
       error: "אנא הזן כתובת אימייל תקינה",
     },
-    
+
     // Footer
     footerTitle: "סלייס אחרי סלייס",
     footerYear: "EST. 2026",
@@ -102,12 +102,12 @@ const translations = {
     siteName: "Slice After Slice",
     tagline: "Perfect Pizza — Every Time",
     footer: "EST. 2026",
-    
+
     // Navigation
     rescue: "Dough Rescue",
     calculator: "Calculator",
     blog: "Blog",
-    
+
     // Pizza Styles
     neapolitan: "Neapolitan",
     newYork: "New York",
@@ -115,7 +115,7 @@ const translations = {
     newHaven: "New Haven (Apizza)",
     detroit: "Detroit",
     sicilian: "Sicilian",
-    
+
     // Calculator
     backToMenu: "Back to Menu",
     ballWeight: "Ball Weight",
@@ -142,7 +142,7 @@ const translations = {
     bakingTime: "Baking Time",
     videoTutorials: "Video Tutorials",
     shareRecipe: "Share Recipe",
-    
+
     // Rescue
     rescueTitle: "Dough Rescue",
     rescueDescription: "Fix common dough-making mistakes",
@@ -156,7 +156,7 @@ const translations = {
     targetStyle: "Target Style",
     calculateSolution: "Calculate Solution",
     solutions: "Solutions",
-    
+
     // Blog
     blogComingSoon: "Coming Soon...",
     blogDescription: "Your comprehensive guide to all things pizza - from recipes to technique guides",
@@ -167,7 +167,7 @@ const translations = {
     blogTechniquesDesc: "Master the art of shaping and stretching dough",
     blogIngredients: "Ingredient Guides",
     blogIngredientsDesc: "Choose the best flour, yeast, and toppings",
-    
+
     // Newsletter
     newsletter: {
       title: "Join the Pizza Community",
@@ -178,7 +178,7 @@ const translations = {
       success: "Thanks for subscribing! You'll receive our next newsletter soon.",
       error: "Please enter a valid email address",
     },
-    
+
     // Footer
     footerTitle: "SLICE AFTER SLICE",
     footerYear: "EST. 2026",
@@ -205,7 +205,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const t = (key: string): string => {
     const keys = key.split('.')
     let value: any = translations[language]
-    
+
     for (const k of keys) {
       if (value && typeof value === 'object' && k in value) {
         value = value[k]
@@ -213,7 +213,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         return key // Return the key if not found
       }
     }
-    
+
     return typeof value === 'string' ? value : key
   }
 
