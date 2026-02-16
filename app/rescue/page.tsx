@@ -4,8 +4,8 @@ import { Newsletter } from "@/components/pizza/newsletter" // ייבוא הני�
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-    title: תיקון טעויות בבצק, הצלת בצק| Slice After Slice',
-description: 'הבצק נדבק? לא תופח? המדריך המהיר לפתרון בעיות נפוצות בהכנת פיצה.',
+    title: 'תיקון טעויות בבצק, הצלת בצק | Slice After Slice',
+    description: 'הבצק נדבק? לא תופח? המדריך המהיר לפתרון בעיות נפוצות בהכנת פיצה.',
 }
 
 export default function RescuePage() {
