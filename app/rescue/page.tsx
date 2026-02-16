@@ -4,8 +4,8 @@ import { Newsletter } from "@/components/pizza/newsletter" // ייבוא הני�
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-    title: 'עזרה ראשונה לבצק | Slice After Slice',
-    description: 'הבצק נדבק? לא תופח? המדריך המהיר לפתרון בעיות נפוצות בהכנת פיצה.',
+    title: תיקון טעויות בבצק, הצלת בצק| Slice After Slice',
+description: 'הבצק נדבק? לא תופח? המדריך המהיר לפתרון בעיות נפוצות בהכנת פיצה.',
 }
 
 export default function RescuePage() {
@@ -13,7 +13,7 @@ export default function RescuePage() {
         <div className="max-w-4xl mx-auto px-6 py-12">
             {/* צמצמנו את mb-8 ל-mb-2 כדי שהכותרת המשנה תתקרב */}
             <h1 className="text-4xl font-black mb-2 uppercase tracking-tighter text-foreground">
-                עזרה ראשונה
+                הצלת בצק: פתרונות לבעיות נפוצות בבצק פיצה
             </h1>
 
             {/* צמצמנו את mt-6 ל-mt-0 ושינינו ל-mb-8 כדי להרחיק מהניווט */}
