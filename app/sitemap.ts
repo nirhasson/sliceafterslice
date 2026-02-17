@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { client } from '@/sanity/lib/client' // וודא שהנתיב ל-client שלך נכון
+import { client } from '@/lib/sanity' // וודא שהנתיב ל-client שלך נכון
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.sliceafterslice.co.il'
