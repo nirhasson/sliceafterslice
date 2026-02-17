@@ -1,7 +1,6 @@
 "use client"
 
-import React from "react"
-import { useState } from "react"
+import React, { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -10,29 +9,57 @@ import { Pizza, CheckCircle2 } from "lucide-react"
 
 export function Newsletter() {
   const [email, setEmail] = useState("")
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle")
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [message, setMessage] = useState("")
   const { t } = useLanguage()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
+    // בדיקה ראשונה בקונסול
+    console.log("Newsletter form submitted! Email:", email);
+
     if (!email || !email.includes("@")) {
+      console.log("Validation failed: invalid email");
       setStatus("error")
       setMessage(t('newsletter.error'))
       return
     }
 
-    // Simulate submission
-    setStatus("success")
-    setMessage(t('newsletter.success'))
-    setEmail("")
-    
-    // Reset after 3 seconds
-    setTimeout(() => {
-      setStatus("idle")
-      setMessage("")
-    }, 3000)
+    setStatus("loading")
+
+    try {
+      console.log("Starting fetch request to /api/newsletter...");
+
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+
+      const data = await response.json()
+      console.log("Server response data:", data);
+
+      if (response.ok) {
+        console.log("Success! Email sent and registered.");
+        setStatus("success")
+        setMessage(t('newsletter.success'))
+        setEmail("")
+
+        setTimeout(() => {
+          setStatus("idle")
+          setMessage("")
+        }, 3000)
+      } else {
+        console.error("Server error:", data.error);
+        setStatus("error")
+        setMessage(data.error || t('newsletter.error'))
+      }
+    } catch (error) {
+      console.error("Fetch/Network error:", error);
+      setStatus("error")
+      setMessage(t('newsletter.error'))
+    }
   }
 
   return (
@@ -56,21 +83,26 @@ export function Newsletter() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="flex-1"
-              disabled={status === "success"}
+              disabled={status === "loading" || status === "success"}
             />
-            <Button 
-              type="submit" 
-              disabled={status === "success"}
+            <Button
+              type="submit"
+              disabled={status === "loading" || status === "success"}
               className="shrink-0"
             >
-              {status === "success" ? <CheckCircle2 className="h-4 w-4" /> : t('newsletter.button')}
+              {status === "success" ? (
+                <CheckCircle2 className="h-4 w-4" />
+              ) : status === "loading" ? (
+                <span className="loading">...</span>
+              ) : (
+                t('newsletter.button')
+              )}
             </Button>
           </div>
-          
+
           {message && (
-            <p className={`text-sm text-center ${
-              status === "success" ? "text-primary" : "text-destructive"
-            }`}>
+            <p className={`text-sm text-center ${status === "success" ? "text-primary" : "text-destructive"
+              }`}>
               {message}
             </p>
           )}
