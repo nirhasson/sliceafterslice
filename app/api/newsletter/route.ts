@@ -8,21 +8,25 @@ export async function POST(request: Request) {
         const body = await request.json();
         const email = body.email;
 
-        // 1. הוספה לרשימת ה-Audience (כדי שתראה אותם בתוך Resend)
+        console.log("Processing subscription for:", email);
+
+        // 1. הוספה לרשימת ה-Audience
+        // עכשיו כשאתה Verified, זה יופיע בטאב Audience ב-Resend
         try {
             await resend.contacts.create({
                 email: email,
                 audienceId: '2371deb5-321f-48bd-856c-2793dbafeba4',
             });
-        } catch (audienceError) {
-            console.error("Audience error (maybe user exists):", audienceError);
-            // אנחנו ממשיכים גם אם זה נכשל, כדי שהמיילים יישלחו
+            console.log("Added to audience successfully");
+        } catch (error) {
+            console.error("Audience Error (User might exist):", error);
         }
 
-        // 2. שליחת מייל אישור למשתמש שנרשם
+        // 2. שליחת מייל אישור למשתמש (מהמייל הרשמי שלך!)
         await resend.emails.send({
-            from: 'onboarding@resend.dev', // שנה ל-info@sliceafterslice.co.il ברגע שהדומיין מאומת
-            to: email, // המייל של המשתמש
+            from: 'Slice After Slice <info@sliceafterslice.co.il>',
+            to: email,
+            reply_to: 'nirhasson01@gmail.com',
             subject: 'ברוך הבא לניוזלטר! 🍕',
             html: `
                 <div dir="rtl" style="font-family: sans-serif; text-align: right;">
@@ -34,14 +38,15 @@ export async function POST(request: Request) {
 
         // 3. שליחת התראה אליך (ניר)
         await resend.emails.send({
-            from: 'onboarding@resend.dev',
+            from: 'Slice After Slice <info@sliceafterslice.co.il>',
             to: 'nirhasson01@gmail.com',
-            subject: 'נרשם חדש לניוזלטר! 🍕',
-            html: `<p>יש לך נרשם חדש: <strong>${email}</strong></p>`
+            subject: '🍕 נרשם חדש לניוזלטר!',
+            html: `<p>יש לך נרשם חדש באתר: <strong>${email}</strong></p>`
         });
 
         return NextResponse.json({ success: true });
     } catch (error: any) {
+        console.error("General API Error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
