@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
         // 2. שלח מייל אישור למשתמש (מהדומיין המאומת שלך)
         await resend.emails.send({
-            from: 'Slice After Slice <info@sliceafterslice.co.il>',
+            from: 'Slice After Slice <onboarding@resend.dev>',
             to: email, // שולח ישירות למשתמש שנרשם
             subject: 'ברוך הבא לניוזלטר! 🍕',
             html: `
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
         // 3. שלח התראה אליך (ניר) על הנרשם החדש
         const notification = await resend.emails.send({
-            from: 'Slice After Slice <info@sliceafterslice.co.il>',
+            from: 'Slice After Slice <onboarding@resend.dev>',
             to: 'nirhasson01@gmail.com',
             subject: '🍕 נרשם חדש לניוזלטר!',
             html: `
