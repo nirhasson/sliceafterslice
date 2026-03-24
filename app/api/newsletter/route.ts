@@ -31,7 +31,7 @@ export async function POST(request: Request) {
             html: `
                 <div dir="rtl" style="font-family: sans-serif; text-align: right;">
                     <h2>תודה שנרשמת!</h2>
-                    <p>איזה כיף שהצטרפת ל-Slice After Slice. מעכשיו תהיה הראשון לדעת על כל מחשבון או מתכון חדש.</p>
+                    <p>שמחים שהצטרפת לניוזלטר שלנו! נעדכן אותך בדברים מעניינים בעולם הפיצה, מתכונים וכתבות חדשות שעלו.</p>
                 </div>
             `
         });
