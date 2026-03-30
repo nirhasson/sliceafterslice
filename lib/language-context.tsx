@@ -20,7 +20,7 @@ const translations = {
     // Navigation
     rescue: "הצלת בצק",
     calculator: "מחשבון",
-    blog: "בלוג",
+  blog: "מגזין",
 
     // Pizza Styles
     neapolitan: "נפוליטנית",

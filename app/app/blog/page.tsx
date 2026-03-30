@@ -12,7 +12,7 @@ export default function BlogPage() {
     <div className="max-w-4xl mx-auto px-6 py-12">
   <h1 className="text-4xl font-black mb-8 uppercase tracking-tighter">המגזין שלנו</h1>
       {/* הניווט שלך עדיין כאן, רק שהפעם הוא יוכל לעבור בין עמודים אמיתיים */}
-      <Navigation />
+      <Navigation/>
 
       <main className="mt-8">
         <BlogServer />

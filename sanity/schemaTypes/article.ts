@@ -29,7 +29,7 @@ export const article = defineType({
       title: 'תקציר',
       type: 'text',
       rows: 3,
-      description: 'תיאור קצר שיופיע בעמוד הבלוג',
+  description: 'תיאור קצר שיופיע בעמוד המגזין',
       validation: (rule) => rule.required().max(200),
     }),
     defineField({

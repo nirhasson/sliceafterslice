@@ -25,7 +25,7 @@ export default defineType({
       name: 'excerpt',
       type: 'text',
       title: 'תקציר',
-      description: 'תיאור קצר שיופיע בעמוד הבלוג',
+  description: 'תיאור קצר שיופיע בעמוד המגזין',
       rows: 4,
     }),
     defineField({

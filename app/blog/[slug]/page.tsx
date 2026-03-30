@@ -109,7 +109,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
     return (
       <div className="max-w-4xl mx-auto px-6 py-20 text-center">
         <h1 className="text-2xl font-bold">הכתבה לא נמצאה</h1>
-        <Button asChild className="mt-8"><Link href="/blog">חזרה לבלוג</Link></Button>
+  <Button asChild className="mt-8"><Link href="/blog">חזרה למגזין</Link></Button>
       </div>
     );
   }
@@ -154,7 +154,7 @@ function RenderPost({ post }: { post: any }) {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12 text-right" dir="rtl">
       <Button variant="ghost" asChild className="mb-6">
-        <Link href="/blog"><ChevronLeft className="h-4 w-4 ml-2" /> חזרה לבלוג</Link>
+  <Link href="/blog"><ChevronLeft className="h-4 w-4 ml-2" /> חזרה למגזין</Link>
       </Button>
       <Navigation />
       <article className="mt-12 space-y-8">
