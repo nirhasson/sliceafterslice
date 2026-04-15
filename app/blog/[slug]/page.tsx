@@ -75,11 +75,11 @@ import type { Metadata } from 'next'
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   if (slug === "local-flour-guide" || slug === "local-1") {
-    return { title: "מדריך הקמחים לפיצה | Pizza Shop", description: "הבסיס של כל פיצה מעולה" }
+    return { title: "מדריך הקמחים לפיצה | מגזין פיצה", description: "הבסיס של כל פיצה מעולה" }
   }
   const article = await client.fetch(`*[_type == "article" && (slug.current == $slug || _id == $slug)][0]{title, excerpt}`, { slug });
   if (!article) return { title: "כתבה לא נמצאה" }
-  return { title: `${article.title} | Pizza Blog`, description: article.excerpt }
+  return { title: `${article.title} | מגזין פיצה`, description: article.excerpt }
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
