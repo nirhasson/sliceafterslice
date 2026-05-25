@@ -42,6 +42,10 @@ export default function SliceAfterSlice() {
         {/* הניווט החדש שמוביל לעמודים נפרדים */}
         <Navigation />
 
+        <p className="text-sm text-muted-foreground text-center mt-6 mb-2">
+          מתכונים לכל סוגי הפיצות בהתאמה לפי כדורי הבצק שתרצו להכין. בחרו את סגנון הפיצה שתרצו וקבלו את המתכון המלא
+        </p>
+
         <main className="mt-6">
           <div className="space-y-4">
             {(

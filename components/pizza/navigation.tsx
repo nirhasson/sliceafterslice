@@ -59,7 +59,7 @@ export function Navigation() {
             )}
           >
             <Icon className="h-5 w-5" />
-            <span className="leading-none">{tab.label}</span>
+            <span className="leading-tight text-center">{tab.label}</span>
           </Link>
         )
       })}

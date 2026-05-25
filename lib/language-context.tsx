@@ -19,7 +19,7 @@ const translations = {
 
     // Navigation
     rescue: "הצלת בצק",
-    calculator: "מחשבון",
+    calculator: "מחשבון פיצה",
   blog: "מגזין",
 
     // Pizza Styles

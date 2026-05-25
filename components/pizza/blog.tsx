@@ -143,11 +143,13 @@ export function Blog() {
         {filteredPosts.map((post) => (
           <Card key={post._id || post.id} className="border-2 hover:border-primary transition-colors overflow-hidden">
             <CardContent className="p-0 flex flex-col md:flex-row gap-6">
-              <div className="relative w-full md:w-64 h-48">
+              <Link href={`/blog/${post.slug?.current || post._id || post.id}`} className="relative w-full md:w-64 h-48 block shrink-0">
                 <Image src={getImageUrl(post)} alt={post.title} fill className="object-cover" />
-              </div>
+              </Link>
               <div className="p-6 flex-1">
-                <h2 className="text-2xl font-bold">{post.title}</h2>
+                <Link href={`/blog/${post.slug?.current || post._id || post.id}`}>
+                  <h2 className="text-2xl font-bold hover:text-primary transition-colors">{post.title}</h2>
+                </Link>
                 <p className="text-muted-foreground line-clamp-2">{post.excerpt}</p>
                 <Button variant="outline" className="mt-4" asChild>
                   <Link href={`/blog/${post.slug?.current || post._id || post.id}`}>
