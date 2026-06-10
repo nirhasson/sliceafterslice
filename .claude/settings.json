@@ -6,7 +6,15 @@
       "Bash(ls /Users/nirhasson/Documents/GitHub/)",
       "Bash(xargs ls)",
       "Bash(cp \"/Users/nirhasson/Documents/GitHub/bread website/public/leaflet.js\" /Users/nirhasson/Documents/GitHub/sliceafterslice/public/leaflet.js)",
-      "Bash(cp \"/Users/nirhasson/Documents/GitHub/bread website/public/leaflet.css\" /Users/nirhasson/Documents/GitHub/sliceafterslice/public/leaflet.css)"
+      "Bash(cp \"/Users/nirhasson/Documents/GitHub/bread website/public/leaflet.css\" /Users/nirhasson/Documents/GitHub/sliceafterslice/public/leaflet.css)",
+      "Bash(ls /Users/nirhasson/.claude/ && echo \"---\" && ls /Users/nirhasson/Documents/GitHub/sliceafterslice/.claude/ 2>/dev/null || echo \"no .claude in project\")",
+      "Read(//Users/nirhasson/.claude/**)",
+      "Bash(mkdir -p ~/.claude/skills)",
+      "Bash(cp /Users/nirhasson/.claude/plugins/frontend-design/skills/frontend-design/SKILL.md ~/.claude/skills/frontend-design.md)",
+      "Bash(mkdir -p ~/.claude/skills/frontend-design)",
+      "Bash(cp ~/.claude/skills/frontend-design.md ~/.claude/skills/frontend-design/SKILL.md)",
+      "Bash(xargs ls -1)",
+      "Bash(npx tsc *)"
     ]
   }
 }

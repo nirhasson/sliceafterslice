@@ -1,6 +1,7 @@
 import { client } from "@/lib/sanity"
 import { PortableText } from "@portabletext/react"
-import { Navigation } from "@/components/pizza/navigation"
+import { SiteHeader } from "@/components/pizza/site-header"
+import { SiteFooter } from "@/components/pizza/site-footer"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft } from "lucide-react"
 import Image from "next/image"
@@ -159,35 +160,38 @@ function RenderPost({ post }: { post: any }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 text-right" dir="rtl">
-      <Button variant="ghost" asChild className="mb-6">
-  <Link href="/blog"><ChevronLeft className="h-4 w-4 ml-2" /> חזרה למגזין</Link>
-      </Button>
-      <Navigation />
-      <article className="mt-12 space-y-8">
-        <header className="space-y-4">
-          <h1 className="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-none">{post.title}</h1>
-          {post.excerpt && <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl">{post.excerpt}</p>}
-        </header>
+    <div className="min-h-screen bg-background flex flex-col" dir="rtl">
+      <SiteHeader />
+      <div className="max-w-4xl w-full mx-auto px-6 flex-1">
+        <Button variant="ghost" asChild className="mb-6">
+          <Link href="/blog"><ChevronLeft className="h-4 w-4 ml-2" /> חזרה למגזין</Link>
+        </Button>
+        <article className="space-y-8">
+          <header className="space-y-4">
+            <h1 className="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-none">{post.title}</h1>
+            {post.excerpt && <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl">{post.excerpt}</p>}
+          </header>
 
-        <div className="relative w-full h-[450px] border-2 border-border overflow-hidden bg-muted shadow-xl">
-          <Image
-            src={post.isLocal ? post.image : (post.mainImage?.asset ? urlFor(post.mainImage) : "/placeholder.svg")}
-            alt={post.title}
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
+          <div className="relative w-full h-[450px] border-2 border-border overflow-hidden bg-muted shadow-xl">
+            <Image
+              src={post.isLocal ? post.image : (post.mainImage?.asset ? urlFor(post.mainImage) : "/placeholder.svg")}
+              alt={post.title}
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
 
-        <div className="prose prose-lg max-w-none prose-red dark:prose-invert">
-          {post.isLocal ? (
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
-          ) : (
-            <PortableText value={post.content} components={portableTextComponents} />
-          )}
-        </div>
-      </article>
+          <div className="prose prose-lg max-w-none prose-red dark:prose-invert">
+            {post.isLocal ? (
+              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            ) : (
+              <PortableText value={post.content} components={portableTextComponents} />
+            )}
+          </div>
+        </article>
+      </div>
+      <SiteFooter />
     </div>
   );
 }

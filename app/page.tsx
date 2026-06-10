@@ -6,6 +6,7 @@ import { Newsletter } from "@/components/pizza/newsletter"
 import { useLanguage } from "@/lib/language-context"
 import { PIZZA_STYLES, type PizzaStyle } from "@/lib/pizza-types"
 import { SiteFooter } from "@/components/pizza/site-footer"
+import { HamburgerMenu } from "@/components/pizza/hamburger-menu"
 
 export default function SliceAfterSlice() {
   const { t } = useLanguage()
@@ -15,7 +16,9 @@ export default function SliceAfterSlice() {
       <div className="max-w-4xl mx-auto px-6 py-12">
         <header className="text-center mb-12 relative">
           <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-border" />
-          <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-border" />
+          <div className="absolute top-0 right-0">
+            <HamburgerMenu />
+          </div>
 
           <h1
             className="text-7xl md:text-8xl font-black text-primary mb-4 tracking-tighter leading-none"

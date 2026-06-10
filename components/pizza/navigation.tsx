@@ -4,23 +4,17 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useLanguage } from "@/lib/language-context"
-import { Calculator, AlertCircle, BookOpen, MapPin, Menu, X, Mail } from "lucide-react"
-import { useState } from "react"
+import { Calculator, AlertCircle, BookOpen, MapPin } from "lucide-react"
 
 export function Navigation() {
   const { t } = useLanguage()
   const pathname = usePathname()
-  const [menuOpen, setMenuOpen] = useState(false)
 
   const tabs = [
-    { value: "menu", label: t('calculator'), icon: Calculator, href: "/" },
-    { value: "blog", label: t('blog'), icon: BookOpen, href: "/blog" },
-    { value: "pizzerias", label: "מדריך פיצריות", icon: MapPin, href: "/pizzerias" },
-    { value: "rescue", label: t('rescue'), icon: AlertCircle, href: "/rescue" },
-  ]
-
-  const mobileOnlyTabs = [
-    { value: "contact", label: "צור קשר", icon: Mail, href: "/contact" },
+    { value: "menu", label: t('calculator'), shortLabel: "מחשבון", icon: Calculator, href: "/", mobileHidden: false },
+    { value: "blog", label: t('blog'), shortLabel: "מגזין", icon: BookOpen, href: "/blog", mobileHidden: false },
+    { value: "pizzerias", label: "מדריך פיצריות", shortLabel: "פיצריות", icon: MapPin, href: "/pizzerias", mobileHidden: false },
+    { value: "rescue", label: t('rescue'), shortLabel: "הצלה", icon: AlertCircle, href: "/rescue", mobileHidden: true },
   ]
 
   const isActive = (href: string) => {
@@ -30,69 +24,31 @@ export function Navigation() {
   }
 
   return (
-    <>
-      {/* Desktop nav */}
-      <nav className="hidden md:flex border-2 border-border overflow-hidden">
-        {tabs.map((tab, index) => {
-          const Icon = tab.icon
-          const active = isActive(tab.href)
-          return (
-            <Link
-              key={tab.value}
-              href={tab.href}
-              className={cn(
-                "flex-1 flex flex-col items-center justify-center gap-2 px-4 py-4 text-xs font-bold uppercase tracking-wider transition-all relative",
-                active
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-background text-foreground hover:bg-muted",
-                index > 0 && "border-r-2 border-border"
-              )}
-            >
-              <Icon className="h-5 w-5" />
-              <span className="leading-tight text-center">{tab.label}</span>
-            </Link>
-          )
-        })}
-      </nav>
-
-      {/* Mobile nav */}
-      <div className="md:hidden">
-        <button
-          onClick={() => setMenuOpen(prev => !prev)}
-          className="w-full flex items-center justify-between px-4 py-3 border-2 border-border bg-background font-black uppercase tracking-wider text-sm"
-        >
-          <span>
-            {tabs.find(t => isActive(t.href))?.label ?? "תפריט"}
-          </span>
-          {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-
-        {menuOpen && (
-          <div className="border-2 border-t-0 border-border overflow-hidden">
-            {[...tabs, ...mobileOnlyTabs].map((tab, index) => {
-              const Icon = tab.icon
-              const active = isActive(tab.href)
-              return (
-                <Link
-                  key={tab.value}
-                  href={tab.href}
-                  onClick={() => setMenuOpen(false)}
-                  className={cn(
-                    "flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-wider transition-all",
-                    active
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-background text-foreground hover:bg-muted",
-                    index > 0 && "border-t-2 border-border"
-                  )}
-                >
-                  <Icon className="h-4 w-4 shrink-0" />
-                  <span>{tab.label}</span>
-                </Link>
-              )
-            })}
-          </div>
-        )}
-      </div>
-    </>
+    <nav className="flex border-2 border-border overflow-hidden">
+      {tabs.map((tab, index) => {
+        const Icon = tab.icon
+        const active = isActive(tab.href)
+        return (
+          <Link
+            key={tab.value}
+            href={tab.href}
+            className={cn(
+              "flex-1 flex flex-col items-center justify-center gap-1 md:gap-2",
+              "px-1 py-2.5 md:px-4 md:py-4",
+              "font-bold uppercase transition-all relative",
+              tab.mobileHidden && "hidden md:flex",
+              active
+                ? "bg-primary text-primary-foreground"
+                : "bg-background text-foreground hover:bg-muted",
+              index > 0 && "border-r-2 border-border"
+            )}
+          >
+            <Icon className="h-4 w-4 md:h-5 md:w-5 shrink-0" />
+            <span className="text-[9px] md:hidden leading-tight text-center">{tab.shortLabel}</span>
+            <span className="hidden md:block text-xs leading-tight text-center tracking-wider">{tab.label}</span>
+          </Link>
+        )
+      })}
+    </nav>
   )
 }
