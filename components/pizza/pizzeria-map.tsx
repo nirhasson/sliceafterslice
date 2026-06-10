@@ -27,10 +27,7 @@ function PizzeriaPanel({ pizzeria, onClose }: { pizzeria: Pizzeria; onClose: () 
           <X className="h-4 w-4" />
         </button>
         <div className="absolute bottom-3 right-4 left-4">
-          <h2
-            className="text-2xl font-black text-white leading-none"
-            style={{ letterSpacing: "-0.03em", fontFamily: 'Impact, "Arial Black", sans-serif' }}
-          >
+          <h2 className="text-3xl font-black text-white leading-none tracking-tighter uppercase">
             {pizzeria.name}
           </h2>
         </div>
