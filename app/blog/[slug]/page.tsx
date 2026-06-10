@@ -157,6 +157,19 @@ function RenderPost({ post }: { post: any }) {
       h3: ({ children }: any) => <h3 className="text-2xl font-bold mt-6 mb-3">{children}</h3>,
       normal: ({ children }: any) => <p className="leading-relaxed mb-4 whitespace-pre-wrap">{children}</p>,
     },
+    marks: {
+      link: ({ value, children }: any) => (
+        <a
+          href={value?.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary underline font-bold hover:opacity-70 transition-opacity"
+        >
+          {children}
+        </a>
+      ),
+      strong: ({ children }: any) => <strong className="font-black">{children}</strong>,
+    },
   };
 
   return (
