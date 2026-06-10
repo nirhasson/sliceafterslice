@@ -67,7 +67,14 @@ const FULL_FLOUR_GUIDE = `
         <li>כמה זמן יש לכם לתפיחה? תפיחה קצרה - קמח עם יותר חלבון עוזר</li>
       </ul>
 
-      <p class="text-lg font-medium mt-8">זכרו: הקמח הוא רק נקודת המוצא. הטכניקה, ההידרציה, זמן התפיחה והטיפול בבצק - כולם חשובים לא פחות. התחילו עם קמח איכותי, אבל אל תפחדו לנסות ולהתנסות עד שתמצאו את השילוב המושלם בשבילכם!</p>
+      <p class="text-lg font-medium mt-8">זכרו: הקמח הוא רק נקודת המוצא. הטכניקה, ההידרציה, זמן התפיחה והטיפול בבצק - כולם חשובים לא פחות. <a href="https://www.riseandcrumb.com/blog/local-flour-guide" target="_blank" rel="noopener noreferrer" class="underline font-bold hover:opacity-70">התחילו עם קמח איכותי</a>, אבל אל תפחדו לנסות ולהתנסות עד שתמצאו את השילוב המושלם בשבילכם!</p>
+
+      <div class="border-r-4 border-primary pr-5 my-8">
+        <p class="text-sm text-muted-foreground mb-1 font-mono uppercase tracking-widest">קריאה נוספת</p>
+        <a href="https://www.riseandcrumb.com/blog/local-flour-guide" target="_blank" rel="noopener noreferrer" class="text-xl font-bold hover:opacity-70">
+          לקריאה על סוגי קמחים נוספים ←
+        </a>
+      </div>
     `;
 
 import type { Metadata } from 'next'

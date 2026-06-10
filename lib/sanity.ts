@@ -90,6 +90,25 @@ export const articlesQuery = `
   }
 `
 
+export const pizzeriasQuery = `
+  *[_type == "pizzeria"] | order(region asc) {
+    _id,
+    name,
+    region,
+    city,
+    address,
+    lat,
+    lng,
+    description,
+    hours,
+    image,
+    specialties,
+    tags,
+    instagram,
+    mapsUrl,
+  }
+`
+
 export const articleBySlugQuery = `
   *[_type == "article" && slug.current == $slug][0]{
     _id,

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/nirhasson/Documents/GitHub -maxdepth 2 -name \"*.tsx\" -o -name \"*.ts\" | grep -i bread | head -20)",
+      "Read(//Users/nirhasson/Documents/GitHub/**)",
+      "Bash(ls /Users/nirhasson/Documents/GitHub/)",
+      "Bash(xargs ls)",
+      "Bash(cp \"/Users/nirhasson/Documents/GitHub/bread website/public/leaflet.js\" /Users/nirhasson/Documents/GitHub/sliceafterslice/public/leaflet.js)",
+      "Bash(cp \"/Users/nirhasson/Documents/GitHub/bread website/public/leaflet.css\" /Users/nirhasson/Documents/GitHub/sliceafterslice/public/leaflet.css)"
+    ]
+  }
+}
