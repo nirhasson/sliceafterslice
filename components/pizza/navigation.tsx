@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useLanguage } from "@/lib/language-context"
-import { Calculator, AlertCircle, BookOpen, MapPin, Menu, X } from "lucide-react"
+import { Calculator, AlertCircle, BookOpen, MapPin, Menu, X, Mail } from "lucide-react"
 import { useState } from "react"
 
 export function Navigation() {
@@ -13,34 +13,14 @@ export function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const tabs = [
-    {
-      value: "menu" as const,
-      label: t('calculator'),
-      shortLabel: "מחשבון",
-      icon: Calculator,
-      href: "/"
-    },
-    {
-      value: "blog" as const,
-      label: t('blog'),
-      shortLabel: "מגזין",
-      icon: BookOpen,
-      href: "/blog"
-    },
-    {
-      value: "pizzerias" as const,
-      label: "מדריך פיצריות",
-      shortLabel: "פיצריות",
-      icon: MapPin,
-      href: "/pizzerias"
-    },
-    {
-      value: "rescue" as const,
-      label: t('rescue'),
-      shortLabel: "הצלה",
-      icon: AlertCircle,
-      href: "/rescue"
-    },
+    { value: "menu", label: t('calculator'), icon: Calculator, href: "/" },
+    { value: "blog", label: t('blog'), icon: BookOpen, href: "/blog" },
+    { value: "pizzerias", label: "מדריך פיצריות", icon: MapPin, href: "/pizzerias" },
+    { value: "rescue", label: t('rescue'), icon: AlertCircle, href: "/rescue" },
+  ]
+
+  const mobileOnlyTabs = [
+    { value: "contact", label: "צור קשר", icon: Mail, href: "/contact" },
   ]
 
   const isActive = (href: string) => {
@@ -89,7 +69,7 @@ export function Navigation() {
 
         {menuOpen && (
           <div className="border-2 border-t-0 border-border overflow-hidden">
-            {tabs.map((tab, index) => {
+            {[...tabs, ...mobileOnlyTabs].map((tab, index) => {
               const Icon = tab.icon
               const active = isActive(tab.href)
               return (

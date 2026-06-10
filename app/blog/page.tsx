@@ -1,5 +1,6 @@
 import BlogServer from "@/components/pizza/blog-server"
-import { Navigation } from "@/components/pizza/navigation"
+import { SiteHeader } from "@/components/pizza/site-header"
+import { SiteFooter } from "@/components/pizza/site-footer"
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -9,14 +10,15 @@ export const metadata: Metadata = {
 
 export default function BlogPage() {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
-  <h1 className="text-4xl font-black mb-8 uppercase tracking-tighter">המגזין שלנו</h1>
-      {/* הניווט שלך עדיין כאן, רק שהפעם הוא יוכל לעבור בין עמודים אמיתיים */}
-      <Navigation />
-
-      <main className="mt-8">
+    <div className="min-h-screen bg-background flex flex-col" dir="rtl">
+      <SiteHeader />
+      <div className="max-w-4xl w-full mx-auto px-6 flex-1">
+        <h2 className="text-4xl font-black mb-8 uppercase tracking-tighter">
+          המגזין שלנו
+        </h2>
         <BlogServer />
-      </main>
+      </div>
+      <SiteFooter />
     </div>
   )
 }

@@ -5,6 +5,7 @@ import { PizzaCard } from "@/components/pizza/pizza-card"
 import { Newsletter } from "@/components/pizza/newsletter"
 import { useLanguage } from "@/lib/language-context"
 import { PIZZA_STYLES, type PizzaStyle } from "@/lib/pizza-types"
+import { SiteFooter } from "@/components/pizza/site-footer"
 
 export default function SliceAfterSlice() {
   const { t } = useLanguage()
@@ -68,12 +69,7 @@ export default function SliceAfterSlice() {
           <Newsletter />
         </div>
 
-        <footer className="mt-12 pt-8 border-t-2 border-primary/20">
-          <div className="flex justify-between items-center text-xs font-mono">
-            <span>{t("siteName").toUpperCase()}</span>
-            <span>{t("footer")}</span>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     </div>
   )

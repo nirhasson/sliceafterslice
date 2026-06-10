@@ -8,6 +8,7 @@ import { PIZZERIAS, REGION_LABELS, type Region, type Pizzeria } from "@/lib/pizz
 import { client, pizzeriasQuery, urlFor } from "@/lib/sanity"
 import { cn } from "@/lib/utils"
 import { MapPin } from "lucide-react"
+import { SiteFooter } from "@/components/pizza/site-footer"
 
 type FilterValue = "all" | Region
 
@@ -85,10 +86,7 @@ export default function PizzeriasPage() {
                 מדריך פיצריות
               </span>
             </div>
-            <h2
-              className="text-3xl md:text-4xl font-black text-foreground leading-none"
-              style={{ letterSpacing: "-0.03em", fontFamily: 'Impact, "Arial Black", sans-serif' }}
-            >
+            <h2 className="text-3xl md:text-4xl font-black text-foreground leading-none uppercase tracking-tighter">
               מדריך הפיצריות המומלצות של ישראל
             </h2>
           </div>
@@ -97,7 +95,7 @@ export default function PizzeriasPage() {
           </p>
         </div>
         <p className="text-sm text-muted-foreground leading-relaxed mt-3 max-w-2xl">
-          המדריך המלא לפיצריות המומלצות בישראל — צוות האתר אוסף עבורכם את המקומות ששמים דגש על מקוריות, חומרי גלם איכותיים ומביאים משהו ייחודי לשוק הפיצה הישראלי.
+          המדריך המלא לפיצריות המומלצות בישראל - צוות האתר אוסף עבורכם את המקומות ששמים דגש על מקוריות, חומרי גלם איכותיים ומביאים משהו ייחודי לשוק הפיצה הישראלי.
         </p>
       </div>
 
@@ -134,12 +132,7 @@ export default function PizzeriasPage() {
         <PizzeriaMap regionFilter={region} pizzerias={allPizzerias} />
       </div>
 
-      <footer className="max-w-4xl w-full mx-auto px-6 pb-6">
-        <div className="flex justify-between items-center text-xs font-mono text-muted-foreground border-t-2 border-border pt-4">
-          <span>SLICE AFTER SLICE</span>
-          <span>EST. 2026</span>
-        </div>
-      </footer>
+      <SiteFooter />
 
     </div>
   )
