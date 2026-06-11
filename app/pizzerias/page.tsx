@@ -95,14 +95,30 @@ export default function PizzeriasPage() {
       </div>
 
       <div className="max-w-4xl w-full mx-auto px-6 pb-3">
-        <div className="flex gap-0 border-2 border-border overflow-hidden w-fit">
+        {/* Mobile: dropdown */}
+        <div className="md:hidden">
+          <select
+            value={region}
+            onChange={e => setRegion(e.target.value as FilterValue)}
+            className="w-full border-2 border-border bg-background text-foreground text-xs font-black uppercase tracking-widest px-4 py-2.5 appearance-none focus:outline-none focus:border-primary"
+          >
+            {FILTERS.map(f => (
+              <option key={f.value} value={f.value}>
+                {f.label} ({counts[f.value]})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Desktop: button row */}
+        <div className="hidden md:flex gap-0 border-2 border-border overflow-hidden w-fit">
           {FILTERS.map(f => (
             <button
               key={f.value}
               onClick={() => setRegion(f.value)}
               className={cn(
                 "px-5 py-2.5 text-xs font-black uppercase tracking-widest transition-all duration-150 relative",
-                "border-l-2 border-border first:border-l-0",
+                "border-l-2 border-border last:border-l-0",
                 region === f.value
                   ? "bg-primary text-primary-foreground"
                   : "bg-background text-foreground hover:bg-muted"
