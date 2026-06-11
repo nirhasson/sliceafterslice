@@ -20,7 +20,9 @@ const pizzeria = defineType({
       options: {
         list: [
           { title: 'צפון', value: 'north' },
+          { title: 'חיפה והסביבה', value: 'haifa' },
           { title: 'מרכז', value: 'center' },
+          { title: 'ירושלים', value: 'jerusalem' },
           { title: 'דרום', value: 'south' },
         ],
         layout: 'radio',

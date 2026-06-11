@@ -14,7 +14,9 @@ type FilterValue = "all" | Region
 const FILTERS: { value: FilterValue; label: string }[] = [
   { value: "all", label: "הכל" },
   { value: "north", label: REGION_LABELS.north },
+  { value: "haifa", label: REGION_LABELS.haifa },
   { value: "center", label: REGION_LABELS.center },
+  { value: "jerusalem", label: REGION_LABELS.jerusalem },
   { value: "south", label: REGION_LABELS.south },
 ]
 
@@ -59,7 +61,9 @@ export default function PizzeriasPage() {
   const counts = {
     all: allPizzerias.length,
     north: allPizzerias.filter(p => p.region === "north").length,
+    haifa: allPizzerias.filter(p => p.region === "haifa").length,
     center: allPizzerias.filter(p => p.region === "center").length,
+    jerusalem: allPizzerias.filter(p => p.region === "jerusalem").length,
     south: allPizzerias.filter(p => p.region === "south").length,
   }
 

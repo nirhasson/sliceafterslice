@@ -1,4 +1,4 @@
-export type Region = "north" | "center" | "south"
+export type Region = "north" | "haifa" | "center" | "jerusalem" | "south"
 
 export interface Pizzeria {
   id: string
@@ -20,22 +20,26 @@ export interface Pizzeria {
 
 export const REGION_LABELS: Record<Region, string> = {
   north: "צפון",
+  haifa: "חיפה והסביבה",
   center: "מרכז",
+  jerusalem: "ירושלים",
   south: "דרום",
 }
 
 export const REGION_VIEW: Record<Region | "all", [number, number, number]> = {
-  all: [31.6, 34.95, 8],
-  north: [32.82, 35.0, 10],
-  center: [32.04, 34.82, 11],
-  south: [31.25, 34.79, 10],
+  all:       [31.9, 35.0, 8],
+  north:     [32.95, 35.5, 10],
+  haifa:     [32.82, 35.0, 11],
+  center:    [32.07, 34.82, 11],
+  jerusalem: [31.78, 35.22, 12],
+  south:     [31.25, 34.79, 10],
 }
 
 export const PIZZERIAS: Pizzeria[] = [
   {
     id: "pizza halalit",
     name: "פיצה חללית",
-    region: "north",
+    region: "haifa",
     city: "חיפה",
     address: "סירקין 12, חיפה",
     lat: 32.8104482,
