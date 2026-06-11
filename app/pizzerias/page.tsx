@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { SiteHeader } from "@/components/pizza/site-header"
-import { PizzeriaMap } from "@/components/pizza/pizzeria-map"
+import { PizzeriaMap, type PizzeriaMapHandle } from "@/components/pizza/pizzeria-map"
 import { PIZZERIAS, REGION_LABELS, type Region, type Pizzeria } from "@/lib/pizzeria-data"
 import { client, pizzeriasQuery, urlFor } from "@/lib/sanity"
 import { cn } from "@/lib/utils"
@@ -40,6 +40,13 @@ function sanityToPizzeria(p: any): Pizzeria {
 export default function PizzeriasPage() {
   const [region, setRegion] = useState<FilterValue>("all")
   const [sanityPizzerias, setSanityPizzerias] = useState<Pizzeria[]>([])
+  const mapRef = useRef<PizzeriaMapHandle>(null)
+  const mapContainerRef = useRef<HTMLDivElement>(null)
+
+  const handleListClick = (pizzeria: Pizzeria) => {
+    mapContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+    setTimeout(() => mapRef.current?.selectPizzeria(pizzeria), 300)
+  }
 
   useEffect(() => {
     client.fetch(pizzeriasQuery)
@@ -110,10 +117,35 @@ export default function PizzeriasPage() {
       </div>
 
       <div
+        ref={mapContainerRef}
         className="mx-6 mb-6 max-w-4xl w-full self-center border-2 border-border relative"
         style={{ height: "60vh", minHeight: "520px" }}
       >
-        <PizzeriaMap regionFilter={region} pizzerias={allPizzerias} />
+        <PizzeriaMap ref={mapRef} regionFilter={region} pizzerias={allPizzerias} />
+      </div>
+
+      <div className="max-w-4xl w-full mx-auto px-6 pb-8" dir="rtl">
+        <div className="border-t-2 border-border pt-8 mb-4">
+          <h2 className="text-2xl font-black uppercase tracking-tighter mb-6">כל הפיצריות במדריך</h2>
+          <div className="grid md:grid-cols-2 border-t-2 border-r-2 border-border">
+            {(region === "all" ? allPizzerias : allPizzerias.filter(p => p.region === region)).map((p) => (
+              <div
+                key={p.id}
+                onClick={() => handleListClick(p)}
+                className="border-b-2 border-l-2 border-border p-5 cursor-pointer hover:bg-muted transition-colors"
+              >
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <h3 className="font-black text-lg uppercase tracking-tight leading-none">{p.name}</h3>
+                  <span className="text-[10px] font-black font-mono uppercase tracking-widest text-muted-foreground shrink-0 pt-0.5">
+                    {REGION_LABELS[p.region]}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground font-mono mb-2">{p.city}{p.address ? ` · ${p.address}` : ""}</p>
+                <p className="text-sm leading-relaxed">{p.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       <SiteFooter />
