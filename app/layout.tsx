@@ -20,8 +20,8 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: '--font-mon
 const spaceGrotesk = { variable: '--font-space-grotesk' }; // Declaring the spaceGrotesk variable
 
 export const metadata: Metadata = {
-  title: 'Slice After Slice - מגזין הפיצה של ישראל - מתכונים לפיצה, מחשבון פיצה ומאמרים',
-  description: 'מתכונים לפיצה, מחשבון בצק מקצועי, מדריכי אפייה וקהילת פיצה. כל מה שחובב פיצה צריך לדעת.',
+  title: 'מחשבון פיצה ובצק מקצועי | Slice After Slice - מגזין הפיצה של ישראל',
+  description: 'מחשבון פיצה ובצק מקצועי - חישוב כמויות, אחוזי מים, ומשקל כדור. מתכונים, מדריכים ומדריך פיצריות לישראל.',
   generator: 'v0.app',
   icons: {
     icon: [

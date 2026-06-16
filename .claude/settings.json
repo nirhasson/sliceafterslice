@@ -14,7 +14,8 @@
       "Bash(mkdir -p ~/.claude/skills/frontend-design)",
       "Bash(cp ~/.claude/skills/frontend-design.md ~/.claude/skills/frontend-design/SKILL.md)",
       "Bash(xargs ls -1)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "WebFetch(domain:www.sliceafterslice.co.il)"
     ]
   }
 }

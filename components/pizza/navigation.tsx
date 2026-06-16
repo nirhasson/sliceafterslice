@@ -11,7 +11,7 @@ export function Navigation() {
   const pathname = usePathname()
 
   const tabs = [
-    { value: "menu", label: t('calculator'), shortLabel: "מחשבון", icon: Calculator, href: "/", mobileHidden: false },
+    { value: "menu", label: t('calculator'), shortLabel: "מתכונים", icon: Calculator, href: "/", mobileHidden: false },
     { value: "blog", label: t('blog'), shortLabel: "מגזין", icon: BookOpen, href: "/blog", mobileHidden: false },
     { value: "pizzerias", label: "מדריך פיצריות", shortLabel: "פיצריות", icon: MapPin, href: "/pizzerias", mobileHidden: false },
     { value: "rescue", label: t('rescue'), shortLabel: "הצלה", icon: AlertCircle, href: "/rescue", mobileHidden: true },
