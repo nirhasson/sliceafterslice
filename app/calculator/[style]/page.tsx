@@ -35,10 +35,11 @@ export async function generateMetadata({ params }: { params: Promise<{ style: st
 
   return {
     // כאן הכותרת תופיע כ: "מתכון לפיצה נפוליטנית | Slice After Slice"
-    title: `מתכון ל${pizzaNameHebrew} | Slice After Slice`,
+    title: `מחשבון פיצה ${pizzaNameHebrew} — כמויות, אחוזי מים ומשקל בצק | Slice After Slice`,
     description: displayDesc,
+    alternates: { canonical: `/calculator/${style}` },
     openGraph: {
-      title: `איך מכינים ${pizzaNameHebrew}? מחשבון כמויות ומדריך`,
+      title: `מחשבון פיצה ${pizzaNameHebrew} — חשב כמויות מדויקות`,
       description: displayDesc,
       images: ogImage ? [{ url: ogImage }] : [],
     }

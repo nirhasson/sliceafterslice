@@ -7,6 +7,7 @@ import { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'תיקון טעויות בבצק, הצלת בצק | Slice After Slice',
   description: 'הבצק נדבק? לא תופח? המדריך המהיר לפתרון בעיות נפוצות בהכנת פיצה.',
+  alternates: { canonical: '/rescue' },
 }
 
 export default function RescuePage() {

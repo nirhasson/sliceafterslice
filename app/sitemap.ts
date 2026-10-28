@@ -16,11 +16,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/calculator/newhaven`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/calculator/detroit`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/calculator/sicilian`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/pizzerias`, lastModified, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${baseUrl}/contact`, lastModified, changeFrequency: 'yearly', priority: 0.3 },
+    // Written in code, not in Sanity, so the query below doesn't find it
+    { url: `${baseUrl}/blog/local-flour-guide`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
   ]
 
   // 2. משיכה דינמית של כל הכתבות מה-Sanity
   // השאילתה מושכת את ה-slug ואת תאריך העדכון האחרון של כל פוסט
-  const query = `*[_type == "post"]{ "slug": slug.current, _updatedAt }`
+  const query = `*[_type == "article" && defined(slug.current)]{ "slug": slug.current, _updatedAt }`
 
   let dynamicPages: MetadataRoute.Sitemap = []
 

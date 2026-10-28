@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { ChevronLeft } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 import urlBuilder from "@sanity/image-url"
 
 // 1. הגדרת ה-URL Builder (קריטי!)
@@ -83,13 +84,19 @@ import type { Metadata } from 'next'
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   if (slug === "local-flour-guide" || slug === "local-1") {
-    return { title: "מדריך הקמחים לפיצה | מגזין פיצה", description: "הבסיס של כל פיצה מעולה" }
+    return {
+      title: "מדריך הקמחים לפיצה | מגזין פיצה",
+      description: "הבסיס של כל פיצה מעולה",
+      alternates: { canonical: "/blog/local-flour-guide" },
+    }
   }
-  const article = await client.fetch(`*[_type == "article" && (slug.current == $slug || _id == $slug)][0]{title, excerpt, seo}`, { slug });
-  if (!article) return { title: "כתבה לא נמצאה" }
+  const article = await client.fetch(`*[_type == "article" && (slug.current == $slug || _id == $slug)][0]{title, excerpt, seo, "slug": slug.current}`, { slug });
+  if (!article) return { title: "כתבה לא נמצאה", robots: { index: false } }
   return {
     title: article.seo?.metaTitle ?? `${article.title} | Slice After Slice`,
     description: article.seo?.metaDescription ?? article.excerpt,
+    // Articles can also be opened by _id; point Google at the slug URL.
+    alternates: { canonical: `/blog/${article.slug ?? slug}` },
   }
 }
 
@@ -117,12 +124,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   `, { slug });
 
   if (!article) {
-    return (
-      <div className="max-w-4xl mx-auto px-6 py-20 text-center">
-        <h1 className="text-2xl font-bold">הכתבה לא נמצאה</h1>
-  <Button asChild className="mt-8"><Link href="/blog">חזרה למגזין</Link></Button>
-      </div>
-    );
+    notFound();
   }
 
   return <RenderPost post={article} />;

@@ -6,6 +6,7 @@ import { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'מגזין פיצה ומתכונים | Slice After Slice',
   description: 'מדריכים מעמיקים, סודות על קמחים, וכל מה שצריך לדעת כדי להכין פיצה מושלמת בבית.',
+  alternates: { canonical: '/blog' },
 }
 
 export default function BlogPage() {
