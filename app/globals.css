@@ -130,3 +130,9 @@
     font-family: var(--font-display);
   }
 }
+
+/* Tone down OpenStreetMap's bright colors to sit on the cream paper background.
+   Applied to the tile layer only, so markers keep their full color. */
+.map-tiles-muted {
+  filter: saturate(0.55) sepia(0.15) brightness(1.03) contrast(0.95);
+}

@@ -163,10 +163,14 @@ export const PizzeriaMap = forwardRef<PizzeriaMapHandle, PizzeriaMapProps>(
           if (c._leaflet_id) { delete c._leaflet_id }
 
           const map = L.map(container, { center: [31.7, 34.9], zoom: 8, zoomControl: false })
+          // Keep the Leaflet credit but drop the flag icon Leaflet adds by default
+          map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>')
 
-          L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-            attribution: "© CARTO",
+          // OpenStreetMap tiles: free, no API key, Hebrew labels. The credit line is required.
+          L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
             maxZoom: 19,
+            className: "map-tiles-muted",
           }).addTo(map)
 
           L.control.zoom({ position: "bottomleft" }).addTo(map)
